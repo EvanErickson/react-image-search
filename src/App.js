@@ -1,20 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Button from '@material-ui/core/Button';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function imageSearch() {
-  alert('hi');
-}
 function App() {
+  const [data, getData ] = useState( [] );
+
+  // added empty array at end so that it isn't endless loop
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+    .then(res => getData(res.data))
+  }, []);
+
   return(
-    <Button 
-    variant="contained"
-    color="primary"
-    onClick={imageSearch}
-    >
-      Hello World
-    </Button>
+    <div className="container">
+      <ul>
+        {
+          data.map(todo => (
+            <li key={todo.id}>
+              {todo.title}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   )
 }
 
-export default App;
+  export default App;
